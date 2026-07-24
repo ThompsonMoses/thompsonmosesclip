@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thompson Moses — Video Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b0f2e;
+    --navy-deep:#0a0f36;
+    --blue-500:#3f4de0;
+    --blue-400:#6d78ea;
+    --blue-300:#9aa3f2;
+    --lavender-bg:#eef0fb;
+    --paper:#ffffff;
+    --muted:#5b5f78;
+    --hair:#e4e6f3;
+    --radius:18px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+  }
+  .accent{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    color:var(--blue-500);
+  }
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  a{text-decoration:none; color:inherit;}
+  button{font-family:inherit; cursor:pointer;}
+
+  /* ---------- NAV ---------- */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--hair);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 32px; max-width:1180px; margin:0 auto;
+  }
+  .logo{font-weight:800; font-size:19px; letter-spacing:-.02em;}
+  .logo .dot{color:var(--blue-500);}
+  .nav-links{display:flex; gap:36px; font-size:14.5px; font-weight:500; color:var(--ink);}
+  .nav-links a{opacity:.75; transition:opacity .2s;}
+  .nav-links a:hover{opacity:1;}
+  .btn-cta{
+    background:var(--navy-deep); color:#fff; border:none;
+    padding:11px 20px; border-radius:100px; font-size:14px; font-weight:600;
+  }
+  .nav-cta-wrap{display:flex; align-items:center; gap:28px;}
+  @media (max-width: 860px){ .nav-links{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:linear-gradient(180deg, #f4f5fd 0%, #eef0fb 60%, #ffffff 100%);
+    padding:78px 0 60px;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;
+  }
+  .eyebrow{
+    display:flex; align-items:center; gap:8px;
+    font-size:12.5px; font-weight:700; letter-spacing:.12em;
+    color:var(--blue-500); text-transform:uppercase; margin-bottom:22px;
+  }
+  .eyebrow .bar{width:16px; height:2px; background:var(--blue-500); display:inline-block;}
+  h1.display{
+    font-size:56px; line-height:1.06; font-weight:800; letter-spacing:-.02em;
+  }
+  h1.display .accent{font-size:1.02em; display:block; font-weight:500;}
+  .hero p.lede{
+    margin-top:22px; font-size:16px; line-height:1.65; color:var(--muted); max-width:440px;
+  }
+  .hero-ctas{display:flex; gap:14px; margin-top:30px;}
+  .btn-primary{
+    background:var(--navy-deep); color:#fff; padding:14px 24px; border-radius:100px;
+    font-size:14.5px; font-weight:600; border:none; display:inline-flex; align-items:center; gap:6px;
+  }
+  .btn-secondary{
+    background:#fff; color:var(--ink); padding:14px 24px; border-radius:100px;
+    font-size:14.5px; font-weight:600; border:1px solid var(--hair);
+  }
+  .stats{display:flex; gap:44px; margin-top:52px;}
+  .stat b{display:block; font-size:26px; font-weight:800;}
+  .stat span{font-size:11.5px; letter-spacing:.06em; color:var(--muted); text-transform:uppercase;}
+
+  /* showreel video panel */
+  .reel-panel{
+    position:relative; aspect-ratio:4/4.55; border-radius:22px; overflow:hidden;
+    background:linear-gradient(160deg, #2a34c9 0%, #4f5bea 45%, #7f8af2 100%);
+    box-shadow:0 30px 60px -20px rgba(40,50,180,.45);
+  }
+  .reel-panel video, .reel-panel img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  }
+  .reel-topbar{
+    position:absolute; top:18px; left:18px; display:flex; align-items:center; gap:6px;
+    background:rgba(10,12,40,.45); color:#fff; font-size:11px; font-weight:600;
+    padding:6px 10px; border-radius:100px; letter-spacing:.04em; z-index:2;
+  }
+  .reel-topbar .rec-dot{width:6px; height:6px; border-radius:50%; background:#ff5b5b;}
+  .reel-play{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:72px; height:72px; border-radius:50%; background:rgba(255,255,255,.22);
+    border:1px solid rgba(255,255,255,.5);
+    display:flex; align-items:center; justify-content:center; z-index:2;
+    backdrop-filter:blur(4px);
+  }
+  .reel-play svg{width:22px; height:22px;}
+  .reel-timecode{
+    position:absolute; bottom:18px; left:18px; background:rgba(10,12,40,.5); color:#fff;
+    font-size:11.5px; padding:6px 10px; border-radius:8px; font-family:monospace; z-index:2;
+  }
+  .video-empty-note{
+    position:absolute; bottom:18px; right:18px; color:rgba(255,255,255,.75); font-size:11px;
+    z-index:2; max-width:150px; text-align:right;
+  }
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:96px 0;}
+  .section-head{text-align:center; max-width:640px; margin:0 auto 56px;}
+  .section-head h2{
+    font-size:36px; font-weight:800; letter-spacing:-.02em; line-height:1.2;
+  }
+  .section-head p{margin-top:16px; color:var(--muted); font-size:15.5px; line-height:1.6;}
+  .bg-lavender{background:var(--lavender-bg);}
+
+  /* ---------- WHAT I EDIT ---------- */
+  .services-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:22px;
+  }
+  .service-card{
+    background:#fff; border-radius:var(--radius); padding:28px 24px;
+    border:1px solid var(--hair);
+  }
+  .service-icon{
+    width:40px; height:40px; border-radius:11px;
+    background:linear-gradient(160deg, var(--blue-500), var(--blue-300));
+    display:flex; align-items:center; justify-content:center; margin-bottom:20px;
+  }
+  .service-icon svg{width:17px; height:17px; fill:#fff;}
+  .service-card h3{font-size:16.5px; font-weight:700; margin-bottom:9px;}
+  .service-card p{font-size:13.7px; color:var(--muted); line-height:1.6;}
+  @media (max-width:980px){ .services-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .services-grid{grid-template-columns:1fr;} }
+
+  /* ---------- WORK / VIDEO GRID ---------- */
+  .filters{display:flex; justify-content:center; gap:10px; margin-bottom:44px; flex-wrap:wrap;}
+  .filter-btn{
+    padding:10px 20px; border-radius:100px; font-size:13.5px; font-weight:600;
+    background:#fff; border:1px solid var(--hair); color:var(--ink); transition:.2s;
+  }
+  .filter-btn.active{background:var(--navy-deep); color:#fff; border-color:var(--navy-deep);}
+  .work-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:26px;
+  }
+  .work-card{
+    border-radius:var(--radius); overflow:hidden; background:#fff;
+    border:1px solid var(--hair); transition:transform .25s, box-shadow .25s;
+  }
+  .work-card:hover{transform:translateY(-4px); box-shadow:0 20px 40px -20px rgba(20,25,90,.25);}
+  .work-thumb{
+  position:relative; aspect-ratio:16/10; background:linear-gradient(160deg,#dfe3fb,#c9cff6);
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+}
+.work-thumb iframe{
+  position:absolute; inset:0; width:100%; height:100%; border:none; z-index:1;
+}
+  .work-tag{
+    position:absolute; top:12px; left:12px; background:rgba(255,255,255,.9);
+    font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+    padding:5px 10px; border-radius:100px; color:var(--blue-500); z-index:2;
+  }
+  .work-meta{padding:16px 18px;}
+  .work-meta h4{font-size:14.5px; font-weight:700;}
+  .work-meta span{font-size:12px; color:var(--muted);}
+  .work-empty{
+    text-align:center; color:var(--muted); font-size:14.5px; padding:60px 0; grid-column:1/-1;
+  }
+  @media (max-width:900px){ .work-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .work-grid{grid-template-columns:1fr;} }
+
+  /* ---------- PROCESS ---------- */
+  .process-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:22px;
+  }
+  .process-card{padding:6px 4px;}
+  .process-num{font-family:'Fraunces', serif; font-style:italic; font-size:26px; color:var(--blue-400); font-weight:500;}
+  .process-card h3{font-size:16px; font-weight:700; margin:10px 0 8px;}
+  .process-card p{font-size:13.6px; color:var(--muted); line-height:1.6;}
+  @media (max-width:900px){ .process-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .process-grid{grid-template-columns:1fr;} }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{
+    display:grid; grid-template-columns:.85fr 1.15fr; gap:56px; align-items:center;
+  }
+  .about-portrait{
+    aspect-ratio:.9/1; border-radius:22px;
+    background:linear-gradient(160deg, #131a56 0%, #3745d6 60%, #7783f2 100%);
+    display:flex; align-items:flex-end; padding:28px;
+    position:relative; overflow:hidden;
+  }
+  .about-portrait video, .about-portrait img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  .about-portrait .initials{
+    font-family:'Fraunces', serif; font-weight:600; font-size:52px; color:rgba(255,255,255,.35); z-index:2;
+  }
+  .about-copy h2{font-size:32px; font-weight:800; letter-spacing:-.02em; line-height:1.2;}
+  .about-copy p{margin-top:18px; font-size:15px; color:var(--muted); line-height:1.7;}
+  .tools{display:flex; gap:9px; flex-wrap:wrap; margin-top:22px;}
+  .tool-chip{
+    background:var(--lavender-bg); color:var(--ink); font-size:13px; font-weight:600;
+    padding:8px 16px; border-radius:100px;
+  }
+  @media (max-width:900px){ .about-grid{grid-template-columns:1fr;} }
+
+  /* ---------- CTA BAND ---------- */
+  .cta-band{
+    background:linear-gradient(120deg, #0a0f3d 0%, #1a1f6b 55%, #2b1650 100%);
+    border-radius:28px; padding:70px 40px; text-align:center; color:#fff;
+    margin:0 32px 0; max-width:1180px; margin-inline:auto;
+  }
+  .cta-band h2{font-size:34px; font-weight:800; letter-spacing:-.02em;}
+  .cta-band .accent{color:#a7b0ff;}
+  .cta-band p{margin-top:14px; color:#c3c6ec; font-size:15px; max-width:480px; margin-inline:auto;}
+  .cta-band .btn-primary{background:#fff; color:var(--ink); margin-top:28px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--navy-deep); color:#fff; padding:44px 0 30px; margin-top:96px;}
+  .footer-top{display:flex; align-items:center; justify-content:space-between;}
+  .footer-icons{display:flex; gap:12px;}
+  .footer-icons a{
+    width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.08);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .footer-icons svg{width:15px; height:15px; fill:#fff;}
+  footer .copyright{text-align:center; color:rgba(255,255,255,.45); font-size:12.5px; margin-top:34px;}
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    h1.display{font-size:40px;}
+    .stats{gap:28px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav>
+    <div class="logo">Thompson<span class="dot">.</span></div>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#process">Process</a>
+      <a href="#about">About</a>
+    </div>
+    <div class="nav-cta-wrap">
+      <button class="btn-cta">Contact</button>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="bar"></span> VIDEO EDITOR · REELS · YOUTUBE · AI VIDEO</div>
+      <h1 class="display">
+        Videos that
+        <span class="accent">stop the scroll</span>
+        and hold attention.
+      </h1>
+      <p class="lede">I'm Thompson Moses — a video editor turning raw footage into short-form hooks, binge-worthy YouTube episodes, cinematic brand films, and next-gen AI-generated video.</p>
+      <div class="hero-ctas">
+        <button class="btn-primary" onclick="document.getElementById('reelPlayer').play()">View Showreel →</button>
+        <button class="btn-secondary">Start a Project</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>300+</b><span>Videos edited</span></div>
+        <div class="stat"><b>50M+</b><span>Views generated</span></div>
+        <div class="stat"><b>4+ yrs</b><span>Editing experience</span></div>
+      </div>
+    </div>
+
+    <div class="reel-panel">
+      <div class="reel-topbar"><span class="rec-dot"></span> REC</div>
+      <!--
+        SHOWREEL VIDEO
+        Replace the src below with your own showreel file or hosted URL.
+        e.g. <video src="videos/showreel.mp4" poster="images/showreel-poster.jpg" ...>
+      -->
+      <video id="reelPlayer" controls preload="metadata"
+             poster=""
+             onplay="document.querySelector('.reel-play').style.display='none'">
+        <source src="videos/Thompson_intro.mov" type="video/mp4">
+      </video>
+      <div class="reel-play" onclick="document.getElementById('reelPlayer').play()">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <!-- <div class="reel-timecode">00:00:12:04</div>
+      <div class="video-empty-note">Drop your showreel file at <code>videos/showreel.mp4</code></div> -->
+    </div>
+  </div>
+</section>
+
+<!-- WHAT I EDIT -->
+<section id="services" class="bg-lavender">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" style="justify-content:center;"><span class="bar"></span> WHAT I EDIT</div>
+      <h2>Editing that moves the <span class="accent">metric</span> that matters.</h2>
+      <p>From vertical hooks to cinematic long-form, I cut for retention, emotion, and conversion.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <h3>Short-Form Editing</h3>
+        <p>Reels, TikToks and Shorts engineered for hook, retention and shareability — captions, sound design, pacing.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M4 6h4v12H4zM10 6h4v12h-4z"/></svg></div>
+        <h3>YouTube Long-Form</h3>
+        <p>Podcasts, vlogs, and educational edits with strong narrative arcs, B-roll layering, and clean audio mixing.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.2H22l-6 4.4L18 22l-6-4.4L6 22l2-8.4-6-4.4h7.6z"/></svg></div>
+        <h3>Cinematic &amp; Brand Films</h3>
+        <p>Commercials, brand stories, and promos with colour grading, sound design, and story-first structure.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 1-5.5 5 1.5 7-6-4-6 4 1.5-7L2 10l7-1z"/></svg></div>
+        <h3>AI Video Creation</h3>
+        <p>End-to-end AI-generated content using tools like Runway, Sora, Kling, and Pika — from concept to final cut.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SELECTED WORK -->
+<section id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" style="justify-content:center;"><span class="bar"></span> SELECTED WORK</div>
+      <h2>Recent <span class="accent">edits</span> from the timeline.</h2>
+      <p>A curated selection across short-form, long-form, cinematic, and AI-generated video.</p>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="short">Short-Form</button>
+      <button class="filter-btn" data-filter="youtube">YouTube</button>
+      <button class="filter-btn" data-filter="cinematic">Cinematic</button>
+      <button class="filter-btn" data-filter="ai">AI Video</button>
+    </div>
+
+    <div class="work-grid" id="workGrid">
+      <!--
+        WORK ITEMS
+        Each card below already has a <video> tag wired up.
+        To add a real video: put the file in /videos/ and update the <source src="..."> path,
+        or point src directly to a hosted URL (Vimeo/YouTube would need an <iframe> swap instead).
+        data-cat controls which filter tab shows the card: short | youtube | cinematic | ai
+      -->
+      <div class="work-card" data-cat="short">
+        <div class="work-thumb">
+  <span class="work-tag">Short-Form</span>
+  <iframe src="https://drive.google.com/file/d/1XpI6pOdL-2GLgtVmZKib5wioHt7ODrfb/preview" allow="autoplay" allowfullscreen></iframe>
+</div>
+        <div class="work-meta"><h4>Hook Series — Reel Cut</h4><span>Add title &amp; client</span></div>
+      </div>
+
+      <div class="work-card" data-cat="youtube">
+        <div class="work-thumb">
+          <span class="work-tag">YouTube</span>
+          <iframe src="https://drive.google.com/file/d/1aZQAOhiclpHtPUwSodgibfe_sdcnKYWX/preview" allow="autoplay" allowfullscreen></iframe>
+        </div>
+        <div class="work-meta"><h4>Podcast Episode Edit</h4><span>Add title &amp; client</span></div>
+      </div>
+
+      <div class="work-card" data-cat="cinematic">
+        <div class="work-thumb">
+          <span class="work-tag">Cinematic</span>
+          <iframe src="https://drive.google.com/file/d/1F4eznhV1t0aDkteFVoBNjNv51Kuo-92v/preview" allow="autoplay" allowfullscreen></iframe>
+        </div>
+        <div class="work-meta"><h4>Brand Film</h4><span>Add title &amp; client</span></div>
+      </div>
+
+      <div class="work-card" data-cat="ai">
+        <div class="work-thumb">
+          <span class="work-tag">AI Video</span>
+          <iframe src="https://drive.google.com/file/d/1b67Xbgt3AighecEhfmyW4-CS9hTvSHk9/preview" allow="autoplay" allowfullscreen></iframe>
+        </div>
+        <div class="work-meta"><h4>AI-Generated Concept Piece</h4><span>Add title &amp; client</span></div>
+      </div>
+
+      <div class="work-card" data-cat="short">
+        <div class="work-thumb">
+        <span class="work-tag">Tiktok</span>
+        <iframe src="https://drive.google.com/file/d/1NxjJribjfBSn2dOij1OAjAetFZoEaiRR/preview" allow="autoplay" allowfullscreen></iframe>
+        </div>
+        <div class="work-meta"><h4>TikTok Hook Compilation</h4><span>Add title &amp; client</span></div>
+      </div>
+
+      <div class="work-card" data-cat="cinematic">
+        <div class="work-thumb">
+          <span class="work-tag">Cinematic</span>
+          <iframe src="https://drive.google.com/file/d/1OzCstPbhWSqhuokCweWEmA_DAloEaeSv/preview" allow="autoplay" allowfullscreen></iframe>
+        </div>
+        <div class="work-meta"><h4>Commercial Spot</h4><span>Add title &amp; client</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" class="bg-lavender">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" style="justify-content:center;"><span class="bar"></span> THE PROCESS</div>
+      <h2>From raw footage to <span class="accent">final cut</span>.</h2>
+      <p>A tight, collaborative workflow built for speed without sacrificing craft.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-card">
+        <div class="process-num">01</div>
+        <h3>Discovery</h3>
+        <p>Goals, audience, references, and the story we're telling — locked in day one.</p>
+      </div>
+      <div class="process-card">
+        <div class="process-num">02</div>
+        <h3>Assembly</h3>
+        <p>Footage review, selects, and a story-first rough cut for early direction.</p>
+      </div>
+      <div class="process-card">
+        <div class="process-num">03</div>
+        <h3>Craft</h3>
+        <p>Colour, sound design, motion graphics, captions — the layers that lift the edit.</p>
+      </div>
+      <div class="process-card">
+        <div class="process-num">04</div>
+        <h3>Delivery</h3>
+        <p>Two rounds of revisions, then master files ready for every platform and aspect ratio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-portrait">
+  <img src="images/thompson-photo.jpg" alt="Thompson Moses" onerror="this.style.display='none'">
+  <div class="initials">TM</div>
+</div>
+    <div class="about-copy">
+      <div class="eyebrow"><span class="bar"></span> ABOUT ME</div>
+      <h2>Hi, I'm <span class="accent">Moses</span> — I cut video for a living.</h2>
+      <p>I've spent the last four years editing across formats — from vertical hooks that hit millions of views, to long-form YouTube episodes, cinematic brand films, and increasingly, AI-generated video.</p>
+      <p>What I care about is retention, story, and craft. Every cut, every sound cue, every frame of colour is a decision — and I sweat all of them.</p>
+      <div class="tools">
+        <span class="tool-chip">Premiere Pro</span>
+        <span class="tool-chip">DaVinci Resolve</span>
+        <span class="tool-chip">After Effects</span>
+        <span class="tool-chip">CapCut</span>
+        <span class="tool-chip">Runway</span>
+        <span class="tool-chip">Kling AI</span>
+        <span class="tool-chip">Sora</span>
+        <span class="tool-chip">ElevenLabs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding-top:0;">
+  <div class="cta-band">
+    <h2>Got footage? Let's <span class="accent">make it hit</span>.</h2>
+    <p>Whether it's a single reel or a 12-month content engine, I'd love to hear what you're building.</p>
+    <button class="btn-primary">Start a Project →</button>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-top">
+    <div class="logo" style="font-size:17px;">Thompson<span class="dot">.</span></div>
+    <div class="footer-icons">
+      <a href="#" aria-label="Showreel"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></a>
+      <a href="#" aria-label="Settings"><svg viewBox="0 0 24 24"><path d="M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg></a>
+      <a href="#" aria-label="Audio"><svg viewBox="0 0 24 24"><path d="M9 18V6l9-2v12"/></svg></a>
+      <a href="#" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M2 4h20v16H2zM2 4l10 8L22 4"/></svg></a>
+    </div>
+  </div>
+  <div class="copyright">© 2026 Thompson Moses. All rights reserved.</div>
+</footer>
+
+<script>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.work-card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      cards.forEach(c => {
+        c.style.display = (f === 'all' || c.dataset.cat === f) ? '' : 'none';
+      });
+    });
+  });
+
+  // pause other work-thumb videos when one plays
+  // document.querySelectorAll('.work-thumb video').forEach(v => {
+   // v.addEventListener('play', () => {
+      //document.querySelectorAll('.work-thumb video').forEach(other => {
+      //  if (other !== v) other.pause();
+      //});
+    //});
+  //});
+</script>
+
+</body>
+</html>
