@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentorship — Thompson Moses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b0f2e;
+    --navy-deep:#0a0f36;
+    --blue-500:#3f4de0;
+    --blue-400:#6d78ea;
+    --blue-300:#9aa3f2;
+    --lavender-bg:#eef0fb;
+    --paper:#ffffff;
+    --muted:#5b5f78;
+    --hair:#e4e6f3;
+    --radius:18px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Inter', sans-serif; color:var(--ink); background:var(--paper); -webkit-font-smoothing:antialiased;}
+  .accent{font-family:'Fraunces', serif; font-style:italic; font-weight:500; color:var(--blue-500);}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  a{text-decoration:none; color:inherit;}
+  button{font-family:inherit; cursor:pointer;}
+
+  /* NAV */
+  header.site{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.85); backdrop-filter:blur(10px); border-bottom:1px solid var(--hair);}
+  nav{display:flex; align-items:center; justify-content:space-between; padding:22px 32px; max-width:1180px; margin:0 auto;}
+  .logo{font-weight:800; font-size:19px; letter-spacing:-.02em;}
+  .logo .dot{color:var(--blue-500);}
+  .nav-links{display:flex; gap:36px; font-size:14.5px; font-weight:500; color:var(--ink);}
+  .nav-links a{opacity:.75; transition:opacity .2s;}
+  .nav-links a:hover{opacity:1;}
+  .nav-links a.current{opacity:1; color:var(--blue-500);}
+  .btn-cta{background:var(--navy-deep); color:#fff; border:none; padding:11px 20px; border-radius:100px; font-size:14px; font-weight:600;}
+  @media (max-width: 860px){ .nav-links{display:none;} }
+
+  section{padding:96px 0;}
+  .bg-lavender{background:var(--lavender-bg);}
+  .section-head{text-align:center; max-width:660px; margin:0 auto 56px;}
+  .eyebrow{display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700; letter-spacing:.12em; color:var(--blue-500); text-transform:uppercase; margin-bottom:20px;}
+  .eyebrow .bar{width:16px; height:2px; background:var(--blue-500); display:inline-block;}
+  .pill{display:inline-flex; align-items:center; padding:9px 18px; border-radius:100px; background:var(--lavender-bg); border:1px solid var(--hair); font-size:13px; font-weight:600; color:var(--ink);}
+
+  /* HERO */
+  .m-hero{text-align:center; padding:78px 0 40px; background:linear-gradient(180deg,#f4f5fd 0%, #eef0fb 60%, #ffffff 100%);}
+  .m-hero .pill{margin-bottom:26px;}
+  .m-hero h1{font-size:48px; font-weight:800; letter-spacing:-.02em; line-height:1.15; max-width:760px; margin:0 auto;}
+  .m-hero p{margin-top:18px; font-size:16px; color:var(--muted); max-width:480px; margin-inline:auto;}
+
+  .intro-box{
+    background:var(--navy-deep); color:#fff; border-radius:24px; padding:52px 48px; text-align:center;
+    max-width:900px; margin:56px auto 0;
+  }
+  .intro-box h2{font-size:28px; font-weight:800; letter-spacing:-.02em;}
+  .intro-box p{margin-top:16px; color:#c3c6ec; font-size:15px; line-height:1.75; max-width:640px; margin-inline:auto;}
+
+  /* PRICING */
+  .pricing-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; align-items:stretch;}
+  .price-card{
+    background:#fff; border:1px solid var(--hair); border-radius:var(--radius); padding:34px 28px;
+    display:flex; flex-direction:column; position:relative;
+  }
+  .price-card.popular{border:2px solid var(--blue-500); box-shadow:0 24px 50px -24px rgba(60,70,220,.35);}
+  .popular-tag{
+    position:absolute; top:-13px; left:50%; transform:translateX(-50%);
+    background:var(--blue-500); color:#fff; font-size:10.5px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; padding:6px 14px; border-radius:100px;
+  }
+  .price-card h3{font-size:17px; font-weight:700; text-align:center;}
+  .price-amount{font-size:38px; font-weight:800; text-align:center; margin-top:14px; color:var(--ink);}
+  .price-sub{text-align:center; font-size:12.5px; color:var(--muted); margin-top:2px; margin-bottom:22px;}
+  .price-desc{font-size:13.7px; color:var(--muted); line-height:1.65; text-align:center; margin-bottom:22px;}
+  .price-features{list-style:none; margin-bottom:28px; flex:1;}
+  .price-features li{display:flex; gap:9px; align-items:flex-start; font-size:13.6px; color:var(--ink); margin-bottom:12px; line-height:1.5;}
+  .price-features li svg{flex-shrink:0; width:15px; height:15px; margin-top:2px; color:var(--blue-500);}
+  .price-cta{
+    background:var(--navy-deep); color:#fff; border:none; border-radius:100px; padding:14px 0;
+    font-size:14px; font-weight:700; width:100%;
+  }
+  .price-card.popular .price-cta{background:var(--blue-500);}
+  @media (max-width:900px){ .pricing-grid{grid-template-columns:1fr; max-width:440px; margin-inline:auto;} }
+
+  /* BENEFITS */
+  .benefits-grid{display:grid; grid-template-columns:repeat(5, 1fr); gap:18px;}
+  .benefit-card{background:#fff; border:1px solid var(--hair); border-radius:var(--radius); padding:26px 18px; text-align:center;}
+  .benefit-icon{
+    width:44px; height:44px; border-radius:12px; margin:0 auto 16px;
+    background:linear-gradient(160deg, var(--blue-500), var(--blue-300));
+    display:flex; align-items:center; justify-content:center;
+  }
+  .benefit-icon svg{width:19px; height:19px; fill:#fff;}
+  .benefit-card h4{font-size:14.5px; font-weight:700; margin-bottom:8px;}
+  .benefit-card p{font-size:12.6px; color:var(--muted); line-height:1.6;}
+  @media (max-width:980px){ .benefits-grid{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:640px){ .benefits-grid{grid-template-columns:repeat(2,1fr);} }
+
+  /* BOOKING */
+  .booking-frame{
+    max-width:900px; margin:0 auto; border-radius:22px; overflow:hidden;
+    box-shadow:0 30px 70px -30px rgba(20,25,90,.3); border:1px solid var(--hair);
+  }
+  .booking-frame iframe{width:100%; height:640px; border:none; display:block;}
+  .booking-note{text-align:center; font-size:12.5px; color:var(--muted); margin-top:14px;}
+
+  /* CTA */
+  .cta-band{
+    background:linear-gradient(120deg, #0a0f3d 0%, #1a1f6b 55%, #2b1650 100%);
+    border-radius:28px; padding:64px 40px; text-align:center; color:#fff;
+    max-width:1180px; margin-inline:auto;
+  }
+  .cta-band h2{font-size:32px; font-weight:800; letter-spacing:-.02em;}
+  .cta-band .accent{color:#a7b0ff;}
+  .cta-band p{margin-top:14px; color:#c3c6ec; font-size:15px; max-width:480px; margin-inline:auto;}
+  .btn-primary{background:#fff; color:var(--ink); padding:14px 26px; border-radius:100px; font-size:14.5px; font-weight:700; border:none; margin-top:26px; display:inline-block;}
+
+  footer{background:var(--navy-deep); color:#fff; padding:44px 0 30px; margin-top:96px;}
+  .footer-top{display:flex; align-items:center; justify-content:space-between;}
+  .footer-icons{display:flex; gap:12px;}
+  .footer-icons a{width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center;}
+  .footer-icons svg{width:15px; height:15px; fill:#fff;}
+  footer .copyright{text-align:center; color:rgba(255,255,255,.45); font-size:12.5px; margin-top:34px;}
+
+  @media (max-width:860px){
+    .m-hero h1{font-size:34px;}
+    .intro-box{padding:36px 24px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav>
+    <a href="index.html" class="logo">Thompson<span class="dot">.</span></a>
+    <div class="nav-links">
+      <a href="index.html#services">Services</a>
+      <a href="index.html#work">Work</a>
+      <a href="index.html#process">Process</a>
+      <a href="index.html#about">About</a>
+      <a href="mentorship.html" class="current">Mentorship</a>
+    </div>
+    <button class="btn-cta" onclick="window.location.href='https://cal.com/thompson-moses-xzbacu/30min-content-audit';">Contact</button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="m-hero">
+  <div class="wrap">
+    <span class="pill">Your Mentor Could Be One Email Away</span>
+    <h1>I haven't <span class="accent">met you</span>, and this is crazy...</h1>
+    <p>But if you want to get better at video editing, then email me maybe.</p>
+
+    <div class="intro-box">
+      <h2>Learning video editing can be tough at times.</h2>
+      <p>It seems like every other week there's a new plugin to learn, another AI tool to keep up with, and a hundred tutorials that stop right before the part you actually needed. Honestly, it can be overwhelming — I know, because I've spent more than a few late nights re-rendering a timeline that refused to export right. Whether you're brand new to Premiere and DaVinci, or already editing and stuck on something specific, I can help.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="bg-lavender">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 style="font-size:34px; font-weight:800; letter-spacing:-.02em; line-height:1.25;">Explore mentorship options tailored to where you are right now.</h2>
+      <p style="margin-top:16px; color:var(--muted); font-size:15.5px;">Every session is a real conversation about your actual edit, not a generic curriculum.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>Spot Mentoring</h3>
+        <div class="price-amount">$150</div>
+        <div class="price-sub">One session</div>
+        <p class="price-desc">1 hour of candid feedback and advice as needed, with no long-term commitment required.</p>
+        <ul class="price-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> 60 minute live call</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Screen-share timeline review</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Written recap and next steps</li>
+        </ul>
+        <button class="price-cta">Book a session</button>
+      </div>
+
+      <div class="price-card popular">
+        <span class="popular-tag">Most Popular</span>
+        <h3>Deep Dive</h3>
+        <div class="price-amount">$300</div>
+        <div class="price-sub">Three sessions</div>
+        <p class="price-desc">A month of guided editing. We pick one real project and take it from raw footage to final delivery together.</p>
+        <ul class="price-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> 3 x 60 minute sessions</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> We edit your project together</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Async questions between calls</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Project files and presets you keep</li>
+        </ul>
+        <button class="price-cta">Book a session</button>
+      </div>
+
+      <div class="price-card">
+        <h3>Full Build Coaching</h3>
+        <div class="price-amount">$1000</div>
+        <div class="price-sub">Monthly retainer</div>
+        <p class="price-desc">For people going all in. Ongoing mentorship while you build an editing practice or take on client work.</p>
+        <ul class="price-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Weekly 60 minute sessions</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Direct access between calls</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Edit and workflow reviews</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Client pricing and positioning help</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Introductions where I can make them</li>
+        </ul>
+        <button class="price-cta">Book a session</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2 style="font-size:32px; font-weight:800; letter-spacing:-.02em;">Benefits of Mentorship</h2>
+      <p style="margin-top:14px; color:var(--muted); font-size:15px;">I know a thing or two because I've done a thing or two in editing, and I'm committed to helping you make use of that.</p>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M14 6l7 7-3 3-7-7z"/></svg></div>
+        <h4>Tools</h4>
+        <p>I'll help you build confidence and skill across Premiere, DaVinci, and the AI layer on top.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg></div>
+        <h4>Resources</h4>
+        <p>I'll point you towards the presets, plugins, and communities actually worth your time.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg></div>
+        <h4>Networking</h4>
+        <p>I'll connect you with other editors so you're not figuring this out alone.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 1-5.5 5 1.5 7-6-4-6 4 1.5-7L2 10l7-1z"/></svg></div>
+        <h4>Opportunity</h4>
+        <p>I'll make introductions and help you source your first or next paid editing gig.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/></svg></div>
+        <h4>Growth</h4>
+        <p>I'll uncover the blind spots slowing your edits down and accelerate your progress.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="bg-lavender">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" style="justify-content:center;"><span class="bar"></span> BOOK YOUR STRATEGY CALL</div>
+      <h2 style="font-size:32px; font-weight:800; letter-spacing:-.02em;">Let's build something great. Schedule your session here.</h2>
+    </div>
+    <div class="booking-frame">
+      <!--
+        BOOKING WIDGET
+        Replace this iframe src with your own Cal.com (or Calendly) scheduling link.
+        e.g. https://cal.com/your-username/30min
+      -->
+      <iframe src="https://cal.com/thompson-moses-xzbacu/30min-content-audit" title="Book a mentorship session"></iframe>
+    </div>
+    <!-- <p class="booking-note">Powered by Cal.com — replace the link above with your own booking page.</p> -->
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding-top:0;">
+  <div class="cta-band">
+    <h2>Book a <span class="accent">consult</span>.</h2>
+    <p>Schedule a quick session to walk through your edit, your goals, and where you're stuck — so we can find the fastest way forward.</p>
+    <a href="https://cal.com/thompson-moses-xzbacu/30min-content-audit" class="btn-primary">Contact me →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-top">
+    <a href="index.html" class="logo" style="font-size:17px;">Thompson<span class="dot">.</span></a>
+    <div class="footer-icons">
+      <a href="#" aria-label="Showreel"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></a>
+      <a href="#" aria-label="Settings"><svg viewBox="0 0 24 24"><path d="M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg></a>
+      <a href="#" aria-label="Audio"><svg viewBox="0 0 24 24"><path d="M9 18V6l9-2v12"/></svg></a>
+      <a href="#" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M2 4h20v16H2zM2 4l10 8L22 4"/></svg></a>
+    </div>
+  </div>
+  <div class="copyright">© 2026 Thompson Moses. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
