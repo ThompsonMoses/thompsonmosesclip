@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mentorship — Thompson Moses</title>
+<title>Mentorship, Thompson Moses</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -37,7 +37,43 @@
   .nav-links a:hover{opacity:1;}
   .nav-links a.current{opacity:1; color:var(--blue-500);}
   .btn-cta{background:var(--navy-deep); color:#fff; border:none; padding:11px 20px; border-radius:100px; font-size:14px; font-weight:600;}
-  @media (max-width: 860px){ .nav-links{display:none;} }
+  .nav-cta-wrap{display:flex; align-items:center; gap:28px;}
+
+  /* Mobile hamburger menu */
+  .hamburger{
+    display:none; flex-direction:column; justify-content:center; gap:5px;
+    width:38px; height:38px; border:none; background:none; padding:0;
+  }
+  .hamburger span{
+    display:block; width:22px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .25s, opacity .25s;
+  }
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  /* Dropdown panel sits directly under the nav bar, doesn't cover it */
+  .mobile-menu{
+    display:none; position:absolute; top:100%; left:0; right:0;
+    background:#fff; z-index:40;
+    flex-direction:column; align-items:stretch;
+    border-top:1px solid var(--hair);
+    box-shadow:0 24px 40px -24px rgba(20,25,90,.2);
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{
+    font-size:15.5px; font-weight:600; color:var(--ink);
+    padding:16px 32px; border-bottom:1px solid var(--hair);
+  }
+  .mobile-menu .btn-cta{
+    margin:16px 32px 24px; width:calc(100% - 64px); padding:13px 0; text-align:center;
+  }
+
+  @media (max-width: 860px){
+    .nav-links{display:none;}
+    .nav-cta-wrap .btn-cta{display:none;}
+    .hamburger{display:flex;}
+  }
 
   section{padding:96px 0;}
   .bg-lavender{background:var(--lavender-bg);}
@@ -143,8 +179,21 @@
       <a href="index.html#about">About</a>
       <a href="mentorship.html" class="current">Mentorship</a>
     </div>
-    <button class="btn-cta" onclick="window.location.href='https://cal.com/thompson-moses-xzbacu/30min-content-audit';">Contact</button>
+    <div class="nav-cta-wrap">
+      <button class="btn-cta" onclick="window.location.href='https://cal.com/thompson-moses-xzbacu/30min-content-audit';">Contact</button>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" onclick="document.getElementById('mobileMenu').classList.toggle('open'); this.classList.toggle('open');">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#services" onclick="closeMobileMenu()">Services</a>
+    <a href="index.html#work" onclick="closeMobileMenu()">Work</a>
+    <a href="index.html#process" onclick="closeMobileMenu()">Process</a>
+    <a href="index.html#about" onclick="closeMobileMenu()">About</a>
+    <a href="mentorship.html" onclick="closeMobileMenu()">Mentorship</a>
+    <button class="btn-cta" onclick="closeMobileMenu(); window.location.href='https://cal.com/thompson-moses-xzbacu/30min-content-audit';">Contact</button>
+  </div>
 </header>
 
 <!-- HERO -->
@@ -156,7 +205,7 @@
 
     <div class="intro-box">
       <h2>Learning video editing can be tough at times.</h2>
-      <p>It seems like every other week there's a new plugin to learn, another AI tool to keep up with, and a hundred tutorials that stop right before the part you actually needed. Honestly, it can be overwhelming — I know, because I've spent more than a few late nights re-rendering a timeline that refused to export right. Whether you're brand new to Premiere and DaVinci, or already editing and stuck on something specific, I can help.</p>
+      <p>It seems like every other week there's a new plugin to learn, another AI tool to keep up with, and a hundred tutorials that stop right before the part you actually needed. Honestly, it can be overwhelming, I know, because I've spent more than a few late nights re-rendering a timeline that refused to export right. Whether you're brand new to Premiere and DaVinci, or already editing and stuck on something specific, I can help.</p>
     </div>
   </div>
 </section>
@@ -171,7 +220,7 @@
 
     <div class="pricing-grid">
       <div class="price-card">
-        <h3>Spot Mentoring</h3>
+        <h3>Starter Pack</h3>
         <div class="price-amount">$150</div>
         <div class="price-sub">One session</div>
         <p class="price-desc">1 hour of candid feedback and advice as needed, with no long-term commitment required.</p>
@@ -180,13 +229,13 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Screen-share timeline review</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Written recap and next steps</li>
         </ul>
-        <button class="price-cta">Book a session</button>
+        <button class="price-cta" onclick="window.location.href='https://cal.com/thompson-moses-xzbacu/30min-content-audit';">Book a session</button>
       </div>
 
       <div class="price-card popular">
         <span class="popular-tag">Most Popular</span>
-        <h3>Deep Dive</h3>
-        <div class="price-amount">$300</div>
+        <h3>Intermediate class</h3>
+        <div class="price-amount">$450</div>
         <div class="price-sub">Three sessions</div>
         <p class="price-desc">A month of guided editing. We pick one real project and take it from raw footage to final delivery together.</p>
         <ul class="price-features">
@@ -195,12 +244,12 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Async questions between calls</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Project files and presets you keep</li>
         </ul>
-        <button class="price-cta">Book a session</button>
+        <button class="price-cta" onclick="window.location.href='https://cal.com/thompson-moses-xzbacu/30min-content-audit';">Book a session</button>
       </div>
 
       <div class="price-card">
-        <h3>Full Build Coaching</h3>
-        <div class="price-amount">$1000</div>
+        <h3>Full Coaching</h3>
+        <div class="price-amount">$1200</div>
         <div class="price-sub">Monthly retainer</div>
         <p class="price-desc">For people going all in. Ongoing mentorship while you build an editing practice or take on client work.</p>
         <ul class="price-features">
@@ -210,7 +259,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Client pricing and positioning help</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Introductions where I can make them</li>
         </ul>
-        <button class="price-cta">Book a session</button>
+        <button class="price-cta" onclick="window.location.href='https://cal.com/thompson-moses-xzbacu/30min-content-audit';">Book a session</button>
       </div>
     </div>
   </div>
@@ -268,7 +317,7 @@
       -->
       <iframe src="https://cal.com/thompson-moses-xzbacu/30min-content-audit" title="Book a mentorship session"></iframe>
     </div>
-    <!-- <p class="booking-note">Powered by Cal.com — replace the link above with your own booking page.</p> -->
+    <!-- <p class="booking-note">Powered by Cal.com  replace the link above with your own booking page.</p> -->
   </div>
 </section>
 
@@ -276,7 +325,7 @@
 <section style="padding-top:0;">
   <div class="cta-band">
     <h2>Book a <span class="accent">consult</span>.</h2>
-    <p>Schedule a quick session to walk through your edit, your goals, and where you're stuck — so we can find the fastest way forward.</p>
+    <p>Schedule a quick session to walk through your edit, your goals, and where you're stuck, so we can find the fastest way forward.</p>
     <a href="https://cal.com/thompson-moses-xzbacu/30min-content-audit" class="btn-primary">Contact me →</a>
   </div>
 </section>
@@ -293,6 +342,13 @@
   </div>
   <div class="copyright">© 2026 Thompson Moses. All rights reserved.</div>
 </footer>
+
+<script>
+  function closeMobileMenu(){
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburgerBtn').classList.remove('open');
+  }
+</script>
 
 </body>
 </html>

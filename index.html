@@ -58,7 +58,42 @@
     padding:11px 20px; border-radius:100px; font-size:14px; font-weight:600;
   }
   .nav-cta-wrap{display:flex; align-items:center; gap:28px;}
-  @media (max-width: 860px){ .nav-links{display:none;} }
+
+  /* Mobile hamburger menu */
+  .hamburger{
+    display:none; flex-direction:column; justify-content:center; gap:5px;
+    width:38px; height:38px; border:none; background:none; padding:0;
+  }
+  .hamburger span{
+    display:block; width:22px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .25s, opacity .25s;
+  }
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  /* Dropdown panel sits directly under the nav bar, doesn't cover it */
+  .mobile-menu{
+    display:none; position:absolute; top:100%; left:0; right:0;
+    background:#fff; z-index:40;
+    flex-direction:column; align-items:stretch;
+    border-top:1px solid var(--hair);
+    box-shadow:0 24px 40px -24px rgba(20,25,90,.2);
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{
+    font-size:15.5px; font-weight:600; color:var(--ink);
+    padding:16px 32px; border-bottom:1px solid var(--hair);
+  }
+  .mobile-menu .btn-cta{
+    margin:16px 32px 24px; width:calc(100% - 64px); padding:13px 0; text-align:center;
+  }
+
+  @media (max-width: 860px){
+    .nav-links{display:none;}
+    .nav-cta-wrap .btn-cta{display:none;}
+    .hamburger{display:flex;}
+  }
 
   /* ---------- HERO ---------- */
   .hero{
@@ -267,8 +302,19 @@
     </div>
     <div class="nav-cta-wrap">
       <button class="btn-cta" onclick="window.location.href='https://cal.com/thompson-moses-xzbacu/30min-content-audit';">Contact</button>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" onclick="document.getElementById('mobileMenu').classList.toggle('open'); this.classList.toggle('open');">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#services" onclick="closeMobileMenu()">Services</a>
+    <a href="#work" onclick="closeMobileMenu()">Work</a>
+    <a href="#process" onclick="closeMobileMenu()">Process</a>
+    <a href="#about" onclick="closeMobileMenu()">About</a>
+    <a href="mentorship.html" onclick="closeMobileMenu()">Mentorship</a>
+    <button class="btn-cta" onclick="closeMobileMenu(); window.location.href='https://cal.com/thompson-moses-xzbacu/30min-content-audit';">Contact</button>
+  </div>
 </header>
 
 <!-- HERO -->
@@ -281,7 +327,7 @@
         <span class="accent">stop the scroll</span>
         and hold attention.
       </h1>
-      <p class="lede">I'm Thompson Moses — a video editor turning raw footage into short-form hooks, binge-worthy YouTube episodes, cinematic brand films, and next-gen AI-generated video.</p>
+      <p class="lede">I'm Thompson Moses, a video editor turning raw footage into short-form hooks, binge-worthy YouTube episodes, cinematic brand films, and next-gen AI-generated video.</p>
       <div class="hero-ctas">
         <button class="btn-primary" onclick="document.getElementById('reelPlayer').play()">View Showreel →</button>
         <button class="btn-secondary">Start a Project</button>
@@ -326,7 +372,7 @@
       <div class="service-card">
         <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <h3>Short-Form Editing</h3>
-        <p>Reels, TikToks and Shorts engineered for hook, retention and shareability — captions, sound design, pacing.</p>
+        <p>Reels, TikToks and Shorts engineered for hook, retention and shareability, captions, sound design, pacing.</p>
       </div>
       <div class="service-card">
         <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M4 6h4v12H4zM10 6h4v12h-4z"/></svg></div>
@@ -341,7 +387,7 @@
       <div class="service-card">
         <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 1-5.5 5 1.5 7-6-4-6 4 1.5-7L2 10l7-1z"/></svg></div>
         <h3>AI Video Creation</h3>
-        <p>End-to-end AI-generated content using tools like Runway, Sora, Kling, and Pika — from concept to final cut.</p>
+        <p>End-to-end AI-generated content using tools like Runway, Sora, Kling, and Pika, from concept to final cut.</p>
       </div>
     </div>
   </div>
@@ -377,7 +423,7 @@
   <span class="work-tag">Short-Form</span>
   <iframe src="https://drive.google.com/file/d/1XpI6pOdL-2GLgtVmZKib5wioHt7ODrfb/preview" allow="autoplay" allowfullscreen></iframe>
 </div>
-        <div class="work-meta"><h4>Hook Series — Reel Cut</h4><span>Add title &amp; client</span></div>
+        <div class="work-meta"><h4>Hook Series, Reel Cut</h4><span>Add title &amp; client</span></div>
       </div>
 
       <div class="work-card" data-cat="youtube">
@@ -418,7 +464,6 @@
           <iframe src="https://drive.google.com/file/d/1OzCstPbhWSqhuokCweWEmA_DAloEaeSv/preview" allow="autoplay" allowfullscreen></iframe>
         </div>
         <div class="work-meta"><h4>Commercial Spot</h4><span>Add title &amp; client</span></div>
-        </div>
       </div>
     </div>
   </div>
@@ -436,7 +481,7 @@
       <div class="process-card">
         <div class="process-num">01</div>
         <h3>Discovery</h3>
-        <p>Goals, audience, references, and the story we're telling — locked in day one.</p>
+        <p>Goals, audience, references, and the story we're telling, locked in day one.</p>
       </div>
       <div class="process-card">
         <div class="process-num">02</div>
@@ -446,7 +491,7 @@
       <div class="process-card">
         <div class="process-num">03</div>
         <h3>Craft</h3>
-        <p>Colour, sound design, motion graphics, captions — the layers that lift the edit.</p>
+        <p>Colour, sound design, motion graphics, captions, the layers that lift the edit.</p>
       </div>
       <div class="process-card">
         <div class="process-num">04</div>
@@ -466,9 +511,9 @@
 </div>
     <div class="about-copy">
       <div class="eyebrow"><span class="bar"></span> ABOUT ME</div>
-      <h2>Hi, I'm <span class="accent">Thompson</span> — I cut video for a living.</h2>
-      <p>I've spent the last four years editing across formats — from vertical hooks that hit millions of views, to long-form YouTube episodes, cinematic brand films, and increasingly, AI-generated video.</p>
-      <p>What I care about is retention, story, and craft. Every cut, every sound cue, every frame of colour is a decision — and I sweat all of them.</p>
+      <h2>Hi, I'm <span class="accent">Thompson</span> I cut video for a living.</h2>
+      <p>I've spent the last four years editing across formats, from vertical hooks that hit millions of views, to long-form YouTube episodes, cinematic brand films, and increasingly, AI-generated video.</p>
+      <p>What I care about is retention, story, and craft. Every cut, every sound cue, every frame of colour is a decision, and I sweat all of them.</p>
       <div class="tools">
         <span class="tool-chip">Premiere Pro</span>
         <span class="tool-chip">DaVinci Resolve</span>
@@ -506,6 +551,11 @@
 </footer>
 
 <script>
+  function closeMobileMenu(){
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburgerBtn').classList.remove('open');
+  }
+
   const filterBtns = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('.work-card');
   filterBtns.forEach(btn => {
