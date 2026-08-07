@@ -156,6 +156,30 @@
     background:linear-gradient(160deg, #2a34c9 0%, #4f5bea 45%, #7f8af2 100%);
     box-shadow:0 30px 60px -20px rgba(40,50,180,.45);
   }
+  /* Animated light beam traveling around the card border */
+  .reel-panel::after{
+    content:'';
+    position:absolute; inset:0; border-radius:inherit; padding:3px;
+    background:conic-gradient(from var(--border-angle, 0deg),
+      transparent 0deg, transparent 250deg,
+      var(--blue-300) 285deg, #ffffff 302deg, var(--blue-300) 319deg,
+      transparent 350deg, transparent 360deg);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    animation:beam-travel 3.2s linear infinite;
+    pointer-events:none;
+    z-index:5;
+  }
+  @property --border-angle{
+    syntax:'<angle>'; initial-value:0deg; inherits:false;
+  }
+  @keyframes beam-travel{
+    to{ --border-angle:360deg; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reel-panel::after{ animation:none; }
+  }
   .reel-panel video, .reel-panel img{
     position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   }
@@ -209,6 +233,40 @@
   .service-card p{font-size:13.7px; color:var(--muted); line-height:1.6;}
   @media (max-width:980px){ .services-grid{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:600px){ .services-grid{grid-template-columns:1fr;} }
+
+  /* ---------- CLIENTS ---------- */
+  .clients-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:22px;
+  }
+  .client-card{
+    background:var(--card-bg); border:1px solid var(--hair); border-radius:var(--radius);
+    padding:28px 24px; text-align:center;
+    transition:background-color .3s ease, border-color .3s ease, transform .25s ease, box-shadow .25s ease;
+  }
+  .client-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 20px 40px -20px rgba(20,25,90,.25);
+  }
+  .client-logo{
+    width:64px; height:64px; border-radius:14px; margin:0 auto 16px;
+    overflow:hidden; position:relative; background:var(--lavender-bg);
+    display:flex; align-items:center; justify-content:center;
+    transition:background-color .3s ease;
+  }
+  .client-logo img{width:100%; height:100%; object-fit:contain; padding:8px;}
+  .client-avatar-fallback{
+    display:none; width:100%; height:100%; align-items:center; justify-content:center;
+    background:linear-gradient(160deg, var(--blue-500), var(--blue-300));
+    color:#fff; font-weight:700; font-size:15px;
+  }
+  .client-card h3{font-size:15.5px; font-weight:700; margin-bottom:6px;}
+  .client-sub{
+    display:block; font-size:11.5px; color:var(--muted); margin-bottom:14px;
+    padding-bottom:14px; border-bottom:1px solid var(--hair);
+  }
+  .client-card p{font-size:13px; color:var(--muted); line-height:1.6; text-align:left;}
+  @media (max-width:980px){ .clients-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .clients-grid{grid-template-columns:1fr;} }
 
   /* ---------- WORK / VIDEO GRID ---------- */
   .filters{display:flex; justify-content:center; gap:10px; margin-bottom:44px; flex-wrap:wrap;}
@@ -348,6 +406,7 @@
     <div class="nav-links">
       <a href="#services">Services</a>
       <a href="#work">Work</a>
+      <a href="#clients">Clients</a>
       <a href="#process">Process</a>
       <a href="#about">About</a>
       <a href="mentorship.html">Mentorship</a>
@@ -366,6 +425,7 @@
   <div class="mobile-menu" id="mobileMenu">
     <a href="#services" onclick="closeMobileMenu()">Services</a>
     <a href="#work" onclick="closeMobileMenu()">Work</a>
+    <a href="#clients" onclick="closeMobileMenu()">Clients</a>
     <a href="#process" onclick="closeMobileMenu()">Process</a>
     <a href="#about" onclick="closeMobileMenu()">About</a>
     <a href="mentorship.html" onclick="closeMobileMenu()">Mentorship</a>
@@ -389,9 +449,9 @@
         <button class="btn-secondary">Start a Project</button>
       </div>
       <div class="stats">
-        <div class="stat"><b>300+</b><span>Videos edited</span></div>
-        <div class="stat"><b>50M+</b><span>Views generated</span></div>
-        <div class="stat"><b>4+ yrs</b><span>Editing experience</span></div>
+        <div class="stat"><b data-count-to="300" data-suffix="+">0+</b><span>Videos edited</span></div>
+        <div class="stat"><b data-count-to="50" data-suffix="M+">0M+</b><span>Views generated</span></div>
+        <div class="stat"><b data-count-to="4" data-suffix="+ yrs">0+ yrs</b><span>Editing experience</span></div>
       </div>
     </div>
 
@@ -525,6 +585,98 @@
   </div>
 </section>
 
+<!-- CLIENTS -->
+<section id="clients" class="bg-lavender reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" style="justify-content:center;"><span class="bar"></span> CLIENTS</div>
+      <h2>Brands that trusted the <span class="accent">edit</span>.</h2>
+      <p>From wellness coaches to ecommerce brands to therapy clinics — different worlds, same craft: clean cuts, strong pacing, and content that actually gets watched.</p>
+    </div>
+    <div class="clients-grid">
+      <!--
+        CLIENT CARDS
+        Each card below is a real client you've worked with. The subtitle and description
+        text are placeholders where I didn't have the specifics — swap in the real niche,
+        location, and results for each one whenever you're ready.
+      -->
+      <div class="client-card">
+        <div class="client-logo">
+          <img src="images/clients/brg.jpeg" alt="BR logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <span class="client-avatar-fallback">BR</span>
+        </div>
+        <h3>BerryRedGal</h3>
+        <span class="client-sub">Africa-inspired jewellery, UK</span>
+        <p>Video editing for content and paid ad creatives, helping launch and grow the brand's social presence.</p>
+      </div>
+      <div class="client-card">
+        <div class="client-logo">
+          <img src="images/clients/connection-therapy-clinic-logo.png" alt="CT logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <span class="client-avatar-fallback">CT</span>
+        </div>
+        <h3>Connection Therapy Clinic</h3>
+        <span class="client-sub">Paediatric speech &amp; OT, California</span>
+        <p>Ongoing video editing for social content and community engagement.</p>
+      </div>
+      <div class="client-card">
+        <div class="client-logo">
+          <img src="images/clients/the-team-paragon-logo.png" alt="Team Paragon logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <span class="client-avatar-fallback">TP</span>
+        </div>
+        <h3>The Team Paragon</h3>
+        <span class="client-sub">Community &amp; entrepreneurship brand</span>
+        <p>Short-form video editing for TikTok, Instagram, and YouTube — hype clips, Hall of Fame highlight reels, and community culture content.</p>
+      </div>
+      <div class="client-card">
+        <div class="client-logo">
+          <img src="images/clients/the-well-taken-care-of-logo.png" alt="The Well Taken Care Of logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <span class="client-avatar-fallback">WT</span>
+        </div>
+        <h3>The Well Taken Care Of</h3>
+        <span class="client-sub">Women's metabolic health show, hosted by Linda Abel</span>
+        <p>Video editing for long-form YouTube episodes and short-form clips on hormones, metabolism, and women's health.</p>
+      </div>
+      <div class="client-card">
+        <div class="client-logo">
+          <img src="images/clients/by-vicki-f-logo.png" alt="By Vicki F logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <span class="client-avatar-fallback">BV</span>
+        </div>
+        <h3>By Vicki F</h3>
+        <span class="client-sub">Beauty &amp; lifestyle creator, Rotterdam, Netherlands</span>
+        <p>Reels editing for beauty and lifestyle content — nail art, product features, and aesthetic day-in-the-life clips.</p>
+      </div>
+      <div class="client-card">
+        <div class="client-logo">
+          <img src="images/clients/azlan-institute-logo.png" alt="Azlan Institute logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <span class="client-avatar-fallback">AI</span>
+        </div>
+        <h3>Azlan Institute</h3>
+        <span class="client-sub">Global online English school, ages 6&ndash;18</span>
+        <p>Video editing for social content — lesson clips, testimonials, and enrollment-focused reels.</p>
+      </div>
+      <div class="client-card">
+        <div class="client-logo">
+          <img src="images/clients/relief-retreats-logo.png" alt="Relief Retreats logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <span class="client-avatar-fallback">RR</span>
+        </div>
+        <h3>Relief Retreats</h3>
+        <span class="client-sub">Burnout coaching, founded by Dr. Tracy Jackson</span>
+        <p>Video editing for social content and masterclass promos supporting the TRUST Pathway™ burnout recovery program.</p>
+      </div>
+      
+      <div class="client-card">
+        <div class="client-logo">
+          <img src="images/clients/monica-nicole-hairs-logo.png" alt="MN logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <span class="client-avatar-fallback">MN</span>
+        </div>
+        <h3>Monica Nicole Hairs</h3>
+        <span class="client-sub">Luxury hair extensions &amp; wigs brand, US</span>
+        <p>Video editing for social and marketing content — product features, before &amp; afters, and brand storytelling.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PROCESS -->
 <section id="process" class="bg-lavender reveal">
   <div class="wrap">
@@ -607,6 +759,50 @@
 </footer>
 
 <script>
+  // Count-up animation for hero stats (300+, 50M+, 4+ yrs)
+  (function(){
+    const counters = document.querySelectorAll('[data-count-to]');
+    if (!counters.length) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function animateCount(el){
+      const target = parseFloat(el.getAttribute('data-count-to'));
+      const suffix = el.getAttribute('data-suffix') || '';
+      if (reduceMotion) {
+        el.textContent = target + suffix;
+        return;
+      }
+      const duration = 1600;
+      const start = performance.now();
+      function step(now){
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(eased * target);
+        el.textContent = current + suffix;
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          el.textContent = target + suffix;
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      counters.forEach(animateCount);
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    counters.forEach(el => observer.observe(el));
+  })();
+
   // Typing headline animation: cycles through phrases, typing then deleting each
   (function(){
     const el = document.getElementById('typedText');
